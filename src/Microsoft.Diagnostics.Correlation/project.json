@@ -1,0 +1,36 @@
+﻿{
+  "version": "1.0.0-*",
+  "dependencies": {
+    "Microsoft.Diagnostics.Correlation.Common": "1.0.0-*"
+  },
+  "frameworks": {
+    "net46": {
+      "frameworkAssemblies": {
+        "System.Web": "4.0.0.0"
+      }
+    },
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Web": "4.0.0.0"
+      }
+    },
+    "net40": {
+      "frameworkAssemblies": {
+        "System.Web": "4.0.0.0"
+      }
+    }
+  },
+  "packOptions": {
+    "owners": [ "Microsoft" ],
+    "summary": "Cross-service telemetry correlation library for web applications",
+    "tags": [
+      "Microsoft, Diagnostics, Correlation"
+    ],
+    "requireLicenseAcceptance": true,
+    "licenseUrl": "https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm"
+  },
+  "buildOptions": {
+    "keyFile": "../../PublicKey.snk",
+    "delaySign": true
+  }
+}

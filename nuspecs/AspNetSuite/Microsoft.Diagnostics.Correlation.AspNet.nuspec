@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.Diagnostics.Correlation.AspNet</id>
+    <version>1.0.0-preview1</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Microsoft Diagnostic Correlation</summary>
+    <description>Correlation</description>
+    <tags>Microsoft, Diagnostics, Correlation, ASP.NET</tags>
+    <licenseUrl>https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm</licenseUrl>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="Microsoft.Diagnostics.Correlation.Mvc" version="[1.0.0-preview1, )" />
+        <dependency id="Microsoft.Diagnostics.Correlation.WebApi" version="[1.0.0-preview1, )" />
+      </group>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Microsoft.Diagnostics.Correlation.Mvc" version="[1.0.0-preview1, )" />
+        <dependency id="Microsoft.Diagnostics.Correlation.WebApi" version="[1.0.0-preview1, )" />
+      </group>
+      <group targetFramework=".NETFramework4.6">
+        <dependency id="Microsoft.Diagnostics.Correlation.Mvc" version="[1.0.0-preview1, )" />
+        <dependency id="Microsoft.Diagnostics.Correlation.WebApi" version="[1.0.0-preview1, )" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

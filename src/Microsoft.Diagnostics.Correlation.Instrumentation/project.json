@@ -1,0 +1,27 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Microsoft.Diagnostics.Correlation": "1.0.0-*",
+    "Microsoft.ApplicationInsights.Agent.Intercept": "2.0.1"
+  },
+
+  "frameworks": {
+    "net46": {},
+    "net45": {},
+    "net40": {}
+  },
+  "packOptions": {
+    "owners": [ "Microsoft" ],
+    "summary": "Cross-service telemetry correlation library: profiler instrumentation",
+    "tags": [
+      "Microsoft, Diagnostics, Correlation"
+    ],
+    "requireLicenseAcceptance": true,
+    "licenseUrl": "https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm"
+  },
+  "buildOptions": {
+    "keyFile": "../../PublicKey.snk",
+    "delaySign": true
+  }
+}
