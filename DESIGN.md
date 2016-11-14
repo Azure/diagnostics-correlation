@@ -1,13 +1,13 @@
 #Introduction
 Correlation is .NET library to propagate correlation context across web applications and allow. 
 It handles incoming requests to extract context, intercepts outgoing requests and injects context to them.
-Existing application instrumentation with the library involves several-line of code on app startup.
+Application instrumentation with the library involves several-lines of code on app startup.
 #Concepts
 ##Events correlation
 ![Context](https://cloud.githubusercontent.com/assets/2347409/20274491/a8f0c286-aa49-11e6-8431-d2e9f7cdfbb1.PNG)
 Library supports two identifiers:
 >-  `correlation-id` identifies operation (transaction, workflow), which may involve multiple services interaction. Stored in HTTP request header `x-ms-request-id`
->- `request-id` identifies particular request; it's created on caller side for any outgoing request and it's scope is limited to this call only.  It allows to distinguish multiple calls from service-a to service-b within the same operation and trace outgoing request on both sides 
+>- `request-id` identifies particular request; it's created on caller side for any outgoing request and it's scope is limited to this call only.  It allows to distinguish multiple calls from service-a to service-b within the same operation and trace outgoing request on both sides.
 By default HTTP request header `x-ms-request-root-id` is used
 
 ##Context
@@ -41,7 +41,7 @@ Following handlers provided by the library:
  `Microsoft.Diagnostics.Correlation.WebApi.CorrelationTracingFilter`
 
 ###Outgoing requests
-Library provides couple of ways to intercept outgoing requests, see the list below: TBD.
+Library provides couple of ways to intercept outgoing requests.
 When outgoing request is intercepted, it gets context from the `AsyncLocal` and injects context into the request.
 Following handlers provided by the library:
 >- DelegatingHandler
