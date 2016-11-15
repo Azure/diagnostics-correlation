@@ -14,6 +14,8 @@ Header names are chosen to be compatible with ApplicationInsights SDK.
 ##Context
 Library provides `CorrelationContext` which is a property bag. `CorrelationId` and `RequestId` are filled by the library, users can add their own properties
 
+`ContextResolver` class provides access to `CorrelationContext` and stores it in `AsyncLocal` varaible
+
 ###Context Factory
 Library provides `IContextFactory` interface and implementations to parse context from the framework-specific HTTP requests:
 - `Microsoft.AspNetCore.Http.HttpRequest` on ASP.NET Core
