@@ -14,10 +14,14 @@ By default HTTP request header `x-ms-request-root-id` is used; if header is not 
 Library provides `CorrelationContext` which is a property bag. `CorrelationId` and `RequestId` are filled by the library, users can add their own properties
 
 ###Context Factory
-Library provides `IContextFactory` and it's framework-specific implementations to parse context from the HTTP request, see [Incoming Requests](#incoming-requests) section for more details. 
+Library provides `IContextFactory` and it's framework-specific implementations to parse context from the HTTP request:
+- `Microsoft.AspNetCore.Http.HttpRequest` on ASP.NET Core
+- `System.Web.HttpRequest` on ASP.NET
+- OWIN environment dictionary for OWIN middleware
+
 Applications can, optionally, provide their own implementations of `IContextFactory`
 ###Context Injector
-Library provides `IContextInjector` and it's platform-specific implementations to inject context into the HTTP request, see [Outgoing Requests](#outgoing-requests) section for more details.
+Library provides `IContextInjector` and it's framework-specific implementations to inject context into the HTTP request: `HttpRequestMessage` or `WebRequest`
 Applications can, optionally, provide their own implementations of `IContextInjector`
 
 ###Logging
