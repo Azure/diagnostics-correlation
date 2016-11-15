@@ -1,7 +1,7 @@
 #Introduction
 Correlation is .NET library to propagate correlation context across web applications and allow. 
 It handles incoming requests to extract context, intercepts outgoing requests and injects context to them.
-Application instrumentation with the library involves several-lines of code on app startup.
+Application instrumentation with the library involves several-lines of code.
 #Concepts
 ##Events correlation
 ![Context](https://cloud.githubusercontent.com/assets/2347409/20274491/a8f0c286-aa49-11e6-8431-d2e9f7cdfbb1.PNG)
@@ -14,9 +14,11 @@ By default HTTP request header `x-ms-request-root-id` is used; if header is not 
 Library provides `CorrelationContext` which is a property bag. `CorrelationId` and `RequestId` are filled by the library, users can add their own properties
 
 ###Context Factory
-Library provides `IContextFactory` and it's platform-specific implementations to parse context from the HTTP request
+Library provides `IContextFactory` and it's framework-specific implementations to parse context from the HTTP request, see [Incoming Requests](#incoming-requests) section for more details. 
+Applications can, optionally, provide their own implementations of `IContextFactory`
 ###Context Injector
-Library provides `IContextInjector` and it's platform-specific implementations to inject context into the HTTP request
+Library provides `IContextInjector` and it's platform-specific implementations to inject context into the HTTP request, see [Outgoing Requests](#outgoing-requests) section for more details.
+Applications can, optionally, provide their own implementations of `IContextInjector`
 
 ###Logging
 The library is intended to work with any logging framework. `CorrelationContext` is public, and users are responsible to instrument their logging framework to write context along with trace event.
