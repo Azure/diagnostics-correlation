@@ -1,6 +1,5 @@
 #Introduction
-Correlation is .NET library to propagate correlation context across web applications and allow. 
-It handles incoming requests to extract context, intercepts outgoing requests and injects context to them.
+Correlation is .NET library to propagate correlation context across web applications. It handles incoming requests to extract context, intercepts outgoing requests and injects context to them.
 Application instrumentation with the library involves several-lines of code.
 #Concepts
 ##Events correlation
@@ -8,24 +7,26 @@ Application instrumentation with the library involves several-lines of code.
 Library supports two identifiers:
 >-  `correlation-id` identifies operation (transaction, workflow), which may involve multiple services interaction. Stored in HTTP request header `x-ms-request-id`; if header is not present, new Guid is generated.
 >- `request-id` identifies particular request; it's **generated** on caller side for an outgoing request and it's scope is limited to this call only.  It allows to distinguish multiple calls from service-a to service-b within the same operation and trace outgoing request on both sides.
-By default HTTP request header `x-ms-request-root-id` is used; if header is not present, new Guid is generated.
+By default HTTP request header `x-ms-request-root-id` is used; if header is not present, new Guid is generated. 
+
+Header names are chosen to be compatible with ApplicationInsights SDK. 
 
 ##Context
 Library provides `CorrelationContext` which is a property bag. `CorrelationId` and `RequestId` are filled by the library, users can add their own properties
 
 ###Context Factory
-Library provides `IContextFactory` and it's framework-specific implementations to parse context from the HTTP request:
+Library provides `IContextFactory` interface and implementations to parse context from the framework-specific HTTP requests:
 - `Microsoft.AspNetCore.Http.HttpRequest` on ASP.NET Core
 - `System.Web.HttpRequest` on ASP.NET
 - OWIN environment dictionary for OWIN middleware
 
 Applications can, optionally, provide their own implementations of `IContextFactory`
 ###Context Injector
-Library provides `IContextInjector` and it's framework-specific implementations to inject context into the HTTP request: `HttpRequestMessage` or `WebRequest`
+Library provides `IContextInjector` interface and it's implementations to inject context into the HTTP request (`HttpRequestMessage` or `WebRequest`)
 Applications can, optionally, provide their own implementations of `IContextInjector`
 
 ###Logging
-The library is intended to work with any logging framework. `CorrelationContext` is public, and users are responsible to instrument their logging framework to write context along with trace event.
+The library is intended to work with any logging framework. `CorrelationContext` is public and could be retrieved from the `AsyncLocal`, and users are responsible to configure their logging framework to write context along with trace event.
 
 ##Request flow
 ![Request flow](https://cloud.githubusercontent.com/assets/2347409/20283940/f7e77ff8-aa6f-11e6-83cb-454c90307c5c.PNG)
@@ -44,8 +45,10 @@ Library provides set of framework-specific handlers for incoming request handlin
  `Microsoft.Diagnostics.Correlation.Mvc.CorrelationTracingFilter`
  `Microsoft.Diagnostics.Correlation.WebApi.CorrelationTracingFilter`
 
-
 When incoming request is received, library calls `IContextFactory` and stores context in the `AsyncLocal` variable.
+
+[Samples](#samples) section describes how handlers should be used with different frameworks.
+
 
 ###Outgoing requests
 Library provides couple of ways to intercept outgoing requests.
@@ -81,13 +84,14 @@ Correlation instrumentation in general consist of 2 steps:
 >- setting up *outgoing* request handler
 
 ### ASP.NET Core
+Library provides two instrumentation options:
 1. Instrument both, incoming and outgoing requests with `DiagnosticSource`:
 `ContextTracingInstrumentation.Enable(new AspNetCoreCorrelationConfiguration());`
 2. Do not use diagnostic source instrumentation:
   * Use middleware for incoming requests:  
 `app.UseMiddleware<CorrelationContextTracingMiddleware>();`
-  * Use  `DelegatingHandler` in `HttpClient` pipeline:
-`services.AddSingleton(CorrelationHttpClientBuilder.CreateClient());`
+  * Use  `DelegatingHandler` in `HttpClient` pipeline (you may add it as singlenton to ASP.NET Core services):
+`CorrelationHttpClientBuilder.CreateClient();`
 
 ### ASP.NET
 1. Incoming requests handling
@@ -100,18 +104,16 @@ In OWIN self-hosted apps, OWIN middleware *or* filters should be used.
   * **Use OWIN middleware (optional)**: `app.Use<CorrelationContextTracingMiddleware>();`
   * **Use HttpModule (optional)**: Add `CorrelationTracingHttpModule` in web.config under `<system.webServer>/<modules>` section (IIS 7.0):
 `<add name="CorrelationTracingHttpModule" type="Microsoft.Diagnostics.Correlation.Http.CorrelationTracingHttpModule, Microsoft.Diagnostics.Correlation" preCondition="managedHandler" />`
-2. Outgoing request handling
-Outgoing requests should be intercepted with instrumented `HttpClient` instance.
+2. Outgoing requests should be intercepted with instrumented `HttpClient` instance.
 Library provide builder to construct instrumented `HttpClient`  and builder allow to customize pipeline and inner handler parameters:
-`CorrelationHttpClientBuilder.CreateClient()`
-Use dependency injection framework to pass `HttpClient` instances to controllers and other components.
-
+`CorrelationHttpClientBuilder.CreateClient()`.
+Consider using dependency injection framework (e.g. [Unity](https://msdn.microsoft.com/en-us/library/dn178463(v=pandp.30).aspx)) to pass `HttpClient` instances to controllers and other components.
 
 ### OWIN Self-Hosted apps
->1. Incoming requests should be handled with OWIN middleware:
+1. Incoming requests should be handled with OWIN middleware:
 `app.Use<CorrelationContextTracingMiddleware>();`
->2. Outgoing requests should be intercepted with instrumented `HttpClient` instance: `CorrelationHttpClientBuilder.CreateClient()`. 
-Use dependency injection framework (e.g. [Unity](https://msdn.microsoft.com/en-us/library/dn178463(v=pandp.30).aspx)) to pass `HttpClient` instances.
+2. Outgoing requests should be intercepted with instrumented `HttpClient` instance: `CorrelationHttpClientBuilder.CreateClient()`. 
+Consider using dependency injection framework (e.g. [Unity](https://msdn.microsoft.com/en-us/library/dn178463(v=pandp.30).aspx)) to pass `HttpClient` instances to controllers and other components.
 
 ### ApplicationInsights integration
 If you use ApplicationInsights to collect telemetry data, you need to configure  `TelemetryInitializer` to map `CorrelationContext` fields to AppInsights properties:
@@ -135,3 +137,14 @@ If you use ApplicationInsights to collect telemetry data, you need to configure 
     //configure CorrelationTelemetryInitializer when application starts
     TelemetryConfiguration.Active.TelemetryInitializers.Add(new CorrelationTelemetryInitializer());
 ```
+#Next Steps
+Correlation library is one part of bigger instrumentation topic. It introduces new concepts like the `CorrelationContext` which should be the shared between different instrumentation pieces. 
+E.g. If user has ApplicationInsights to collect and send telemetry, this context should be shared by both libraries and potentially user code. Incoming and outgoing requests handling is done by AppInsights and Correlation, so we potentially introduce configuration issues and race conditions when multiple libraries handle incoming requests.
+We are considering different options to isolate shared pieces and interfaces.
+##Opentracing
+[Opentracing](http://opentracing.io/) provides set of interfaces to extract and inject context, start and stop operations (Spans) and describes context.
+It, however, neither standartize how services should communicate nor how service should report its telemetry events.
+##ILogger
+`ILogger` provides interface to work with generic context and log it along with message. However, reporting telemetry may involve different types of events such as traces, requests, metrics.
+##ASP.NET (and Core) libraries
+Context and interface to access it may become part of the ASP.NET framework
