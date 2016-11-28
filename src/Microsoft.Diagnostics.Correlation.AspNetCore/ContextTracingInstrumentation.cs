@@ -9,11 +9,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using Microsoft.Diagnostics.Context;
-using Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation.Internal;
+using Microsoft.Diagnostics.Correlation.AspNetCore.Internal;
 using Microsoft.Diagnostics.Correlation.Common.Http;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
 
-namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation
+namespace Microsoft.Diagnostics.Correlation.AspNetCore
 {
     /// <summary>
     /// Implements outgoing HTTP requests instrumentation with <see cref="DiagnosticListener"/> 
@@ -52,23 +52,23 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation
             if (configuration.ContextInjectors == null)
                 throw new ArgumentNullException(nameof(configuration.ContextInjectors));
 
+            if (coreConfig.ContextFactory == null)
+                throw new ArgumentNullException(nameof(coreConfig.ContextFactory));
+
             var observers = new Dictionary<string, IObserver<KeyValuePair<string, object>>>
             {
                 {
-                    HttpListenerName, new HttpDiagnosticListenerObserver<TContext>(
-                        configuration.ContextInjectors, 
-                        configuration.EndpointValidator,
-                        new NotifierWrapper<TContext>(configuration.RequestNotifier))
+                    AspNetListenerName, new AspNetDiagnosticListenerObserver<TContext>(coreConfig.ContextFactory)
                 }
             };
 
-            if (coreConfig.InstrumentIncomingRequests)
+            if (coreConfig.InstrumentOutgoingRequests)
             {
-                if (coreConfig.ContextFactory == null)
-                    throw new ArgumentNullException(nameof(coreConfig.ContextFactory));
-
-                observers.Add(AspNetListenerName,
-                    new AspNetDiagnosticListenerObserver<TContext>(coreConfig.ContextFactory));
+                observers.Add(
+                    HttpListenerName, new HttpDiagnosticListenerObserver<TContext>(
+                        configuration.ContextInjectors,
+                        configuration.EndpointValidator,
+                        new NotifierWrapper<TContext>(configuration.RequestNotifier)));
             }
 
             return DiagnosticListener.AllListeners.Subscribe(new DiagnosticListenersObserver(observers));

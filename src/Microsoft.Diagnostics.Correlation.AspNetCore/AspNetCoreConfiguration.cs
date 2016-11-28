@@ -9,7 +9,7 @@ using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
 
-namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation
+namespace Microsoft.Diagnostics.Correlation.AspNetCore
 {
     /// <summary>
     /// Provides generic instrumentation configuration for ASP.NET Core apps: set of injectors and other instrumetnation parameters
@@ -18,9 +18,9 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation
     public class AspNetCoreConfiguration<TContext> : Configuration<TContext, HttpRequestMessage, HttpResponseMessage> where TContext : ICorrelationContext<TContext>
     {
         /// <summary>
-        /// Controls if incoming requests should be instumented with <see cref="System.Diagnostics.DiagnosticListener"/>, <see cref="Microsoft.Diagnostics.Correlation.AspNetCore.Middleware.ContextTracingMiddleware{TContext}"/> and <see cref="Microsoft.Diagnostics.Correlation.AspNetCore.Middleware.CorrelationContextTracingMiddleware"/> for alternative incoming requests handling
+        /// Controls if incoming requests should be instumented with <see cref="System.Diagnostics.DiagnosticListener"/>
         /// </summary>
-        public bool InstrumentIncomingRequests { get; set; } = true;
+        public bool InstrumentOutgoingRequests { get; set; } = true;
 
         /// <summary>
         /// Sets <see cref="IContextFactory{TContext,TRequest}"/> to control how context is extracted from the incoming request
@@ -40,12 +40,12 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation
         }
 
         /// <summary>
-        /// Controls if incoming requests should be instumented with <see cref="System.Diagnostics.DiagnosticListener"/>, <see cref="Microsoft.Diagnostics.Correlation.AspNetCore.Middleware.ContextTracingMiddleware{TContext}"/> and <see cref="Microsoft.Diagnostics.Correlation.AspNetCore.Middleware.CorrelationContextTracingMiddleware"/> for alternative incoming requests handling
+        /// Controls if incoming requests should be instumented with <see cref="System.Diagnostics.DiagnosticListener"/>
         /// </summary>
         /// <returns>Current <see cref="Configuration{TContext,TOutRequest,TOutResponse}"/> for chaining</returns>
-        public Configuration<TContext, HttpRequestMessage, HttpResponseMessage> DiableIncomingRequestInstrumentation()
+        public Configuration<TContext, HttpRequestMessage, HttpResponseMessage> DiableOutgoingRequestInstrumentation()
         {
-            InstrumentIncomingRequests = false;
+            InstrumentOutgoingRequests = false;
             return this;
         }
     }

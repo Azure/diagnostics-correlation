@@ -3,7 +3,6 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Diagnostics.Context;
-using Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Http;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;

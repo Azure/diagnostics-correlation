@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 
-namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation.Internal
+namespace Microsoft.Diagnostics.Correlation.AspNetCore.Internal
 {
     internal class AspNetDiagnosticListenerObserver<TContext> : IObserver<KeyValuePair<string, object>>
     {

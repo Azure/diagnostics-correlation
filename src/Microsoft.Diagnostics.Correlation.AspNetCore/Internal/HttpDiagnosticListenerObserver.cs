@@ -12,7 +12,7 @@ using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
 
-namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation.Internal
+namespace Microsoft.Diagnostics.Correlation.AspNetCore.Internal
 {
     internal class HttpDiagnosticListenerObserver<TContext> : IObserver<KeyValuePair<string, object>> where TContext : ICorrelationContext<TContext>
     {

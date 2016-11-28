@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation.Internal
+namespace Microsoft.Diagnostics.Correlation.AspNetCore.Internal
 {
     internal class DiagnosticListenersObserver : IObserver<DiagnosticListener>
     {

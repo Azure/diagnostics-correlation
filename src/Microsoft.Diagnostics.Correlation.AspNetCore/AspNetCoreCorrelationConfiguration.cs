@@ -9,7 +9,7 @@ using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Http;
 
-namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation
+namespace Microsoft.Diagnostics.Correlation.AspNetCore
 {
     /// <summary>
     /// Provides default instrumentation configuration for ASP.NET Core apps, configures <see cref="CorrelationContext"/> to be used

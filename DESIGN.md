@@ -35,9 +35,7 @@ The library is intended to work with any logging framework. `CorrelationContext`
 
 ###Incoming requests
 Library provides set of framework-specific handlers for incoming request handling:
- >- ASP.NET Core Middleware:
- `Microsoft.Diagnostics.Correlation.AspNetCore.Middleware.CorrelationContextTracingMiddleware`
- >- ASP.NET DiagnosticSource listener
+ >- ASP.NET Core DiagnosticSource listener
 `Microsoft.Diagnostics.Correlation.AspNetCore.ContextTracingInstrumentation`
  >- OWIN Middleware
  `Microsoft.Diagnostics.Correlation.Common.Owin.CorrelationContextTracingMiddleware`
@@ -92,9 +90,9 @@ Correlation instrumentation in general consist of 2 steps:
 Library provides two instrumentation options:
 1. Instrument both, incoming and outgoing requests with `DiagnosticSource`:
 `ContextTracingInstrumentation.Enable(new AspNetCoreCorrelationConfiguration());`
-2. Do not use diagnostic source instrumentation:
-  * Use middleware for incoming requests:  
-`app.UseMiddleware<CorrelationContextTracingMiddleware>();`
+2. Do not use diagnostic source instrumentation for outgiung requests instrumentation:
+  * Use ASP.NET Core `DiagnosticSource` for incoming requests only:  
+`ContextTracingInstrumentation.Enable(new AspNetCoreCorrelationConfiguration().DiableOutgoingRequestInstrumentation());`
   * Use  `DelegatingHandler` in `HttpClient` pipeline (you may add it as singlenton to ASP.NET Core services):
 `CorrelationHttpClientBuilder.CreateClient();`
 
