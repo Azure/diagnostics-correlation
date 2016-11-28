@@ -13,7 +13,7 @@ namespace Microsoft.Diagnostics.Correlation.Common
     public interface IEndpointValidator
     {
         /// <summary>
-        /// Validates Uri to check if it should be insrumented
+        /// Validates Uri to check if it should be instrumented
         /// </summary>
         /// <param name="uri">Uri to check</param>
         /// <returns>True if endoiunt should be instrumented, false otherwise</returns>

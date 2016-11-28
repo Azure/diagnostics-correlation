@@ -5,7 +5,7 @@
 
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.Diagnostics.Correlation.Common;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Http;
 
 namespace Microsoft.Diagnostics.Correlation.Mvc
@@ -32,7 +32,7 @@ namespace Microsoft.Diagnostics.Correlation.Mvc
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var ctx = contextFactory.CreateContext(HttpContext.Current.Request);
-            ContextResolver.SetRequestContext(ctx);
+            ContextResolver.SetContext(ctx);
         }
     }
 }

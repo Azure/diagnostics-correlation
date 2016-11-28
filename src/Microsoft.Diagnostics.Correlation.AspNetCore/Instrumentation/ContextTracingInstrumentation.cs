@@ -8,8 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation.Internal;
-using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Http;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
 

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Http;
 using Moq;
@@ -19,7 +20,7 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
         public async Task SuccessFlow()
         {
             var correlationId = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(new CorrelationContext(correlationId));
+            ContextResolver.SetContext(new CorrelationContext(correlationId));
 
             var innerHandler = setupMockHandler(validateHeader);
             var client = HttpClientBuilder.CreateClient(innerHandler.Object, new[] {new CorrelationContextInjector()});
@@ -30,7 +31,7 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
         public async Task SuccessFlowCustomHandlers()
         {
             var correlationId = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(new CorrelationContext(correlationId));
+            ContextResolver.SetContext(new CorrelationContext(correlationId));
 
             var innerHandler = setupMockHandler(validateHeader);
             var client = HttpClientBuilder.CreateClient(innerHandler.Object, new[] {new CorrelationContextInjector()},
@@ -42,7 +43,7 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
         public async Task NoInjectors()
         {
             var correlationId = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(correlationId);
+            ContextResolver.SetContext(correlationId);
 
             var innerHandler = setupMockHandler(validateNoHeader);
             var client = HttpClientBuilder.CreateClient(innerHandler.Object, new List<IContextInjector<string, HttpRequestMessage>>());
@@ -54,7 +55,7 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
         public async Task ValidateMultipleInjectors()
         {
             var correlationId = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(new CorrelationContext(correlationId));
+            ContextResolver.SetContext(new CorrelationContext(correlationId));
 
             var testInjector = new TestInjector();
             var innerHandler = setupMockHandler(r =>
@@ -73,7 +74,7 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
             IEnumerable<string> actualHeader;
             Assert.True(request.Headers.TryGetValues(CorrelationHeaderInfo.CorrelationIdHeaderName, out actualHeader));
             Assert.Equal(1, actualHeader.Count());
-            Assert.Equal(ContextResolver.GetRequestContext<CorrelationContext>().CorrelationId, actualHeader.First());
+            Assert.Equal(ContextResolver.GetContext<CorrelationContext>().CorrelationId, actualHeader.First());
         }
         private static void validateNoHeader(HttpRequestMessage request)
         {

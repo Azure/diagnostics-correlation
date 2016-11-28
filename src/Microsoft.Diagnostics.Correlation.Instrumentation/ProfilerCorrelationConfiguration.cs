@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.Net;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Http;
 

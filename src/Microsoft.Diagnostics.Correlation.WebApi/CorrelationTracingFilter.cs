@@ -6,7 +6,7 @@
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
-using Microsoft.Diagnostics.Correlation.Common;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Http;
 
 namespace Microsoft.Diagnostics.Correlation.WebApi
@@ -33,7 +33,7 @@ namespace Microsoft.Diagnostics.Correlation.WebApi
         public override void OnActionExecuting(HttpActionContext filterContext)
         {
             var ctx = contextFactory.CreateContext(HttpContext.Current.Request);
-            ContextResolver.SetRequestContext(ctx);
+            ContextResolver.SetContext(ctx);
         }
     }
 }

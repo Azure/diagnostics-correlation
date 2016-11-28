@@ -5,7 +5,7 @@
 
 using System;
 using System.Web;
-using Microsoft.Diagnostics.Correlation.Common;
+using Microsoft.Diagnostics.Context;
 
 namespace Microsoft.Diagnostics.Correlation.Http
 {
@@ -39,7 +39,7 @@ namespace Microsoft.Diagnostics.Correlation.Http
             HttpApplication application = (HttpApplication)source;
             var ctx = factory.CreateContext(application.Context.Request);
             if (ctx != null)
-                ContextResolver.SetRequestContext(ctx);
+                ContextResolver.SetContext(ctx);
         }
     }
 }

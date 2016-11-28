@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Http;
 using Moq;
@@ -25,7 +26,7 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
         public async Task SuccessFlow()
         {
             var correlationId = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(new CorrelationContext(correlationId));
+            ContextResolver.SetContext(new CorrelationContext(correlationId));
 
             var innerHandler = setupMockHandler(createSuccessResponse);
             var corrHandler = new ContextRequestHandler<CorrelationContext>(new [] {new CorrelationContextInjector()}, innerHandler.Object);
@@ -41,7 +42,7 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
 
         private static void validateRequest(HttpRequestMessage request)
         {
-            var ctx = ContextResolver.GetRequestContext<CorrelationContext>();
+            var ctx = ContextResolver.GetContext<CorrelationContext>();
             IEnumerable<string> correlationIdHeader;
             Assert.True(request.Headers.TryGetValues(CorrelationHeaderInfo.CorrelationIdHeaderName, out correlationIdHeader));
             Assert.Equal(1, correlationIdHeader.Count());

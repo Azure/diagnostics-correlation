@@ -7,9 +7,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Context;
+using Microsoft.Diagnostics.Correlation.Common;
 using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, object>, System.Threading.Tasks.Task>;
 
-namespace Microsoft.Diagnostics.Correlation.Common.Owin
+namespace Microsoft.Diagnostics.Correlation.Owin
 {
     /// <summary>
     /// Provides OWIN middleware to extract and retain generic correlation context from the incoming request
@@ -39,7 +41,7 @@ namespace Microsoft.Diagnostics.Correlation.Common.Owin
             try
             {
                 var ctx = contextFactory.CreateContext(environment);
-                ContextResolver.SetRequestContext(ctx);
+                ContextResolver.SetContext(ctx);
 
                 await next.Invoke(environment).ConfigureAwait(false);
             }

@@ -4,9 +4,9 @@
 // ------------------------------------------------------------
 
 using System;
-using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Instrumentation.Extensions.Intercept;
 using System.Net;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
 using Microsoft.Diagnostics.Correlation.Http;
 
@@ -30,7 +30,7 @@ namespace Microsoft.Diagnostics.Correlation.Instrumentation
         /// Enables outgoing request instrumentation: inject generic correlation context in outgoing <see cref="System.Net.Http.HttpClient"/> or <see cref="System.Net.WebRequest"/> call
         /// </summary>
         /// <typeparam name="TContext">Type of correlation context</typeparam>
-        /// <param name="configuration">Collection of <see cref="IContextInjector{TContext,TRequest}"/> to inject context into outgoing request</param>
+        /// <param name="configuration">Collection of <see cref="Common.IContextInjector{TContext,TRequest}"/> to inject context into outgoing request</param>
         public static void Enable<TContext>(Configuration<TContext, WebRequest, WebResponse> configuration) where TContext : ICorrelationContext<TContext>
         {
             if (configuration == null)
@@ -85,7 +85,7 @@ namespace Microsoft.Diagnostics.Correlation.Instrumentation
             {
                 if (config.EndpointValidator.Validate(request.RequestUri))
                 {
-                    var ctx = ContextResolver.GetRequestContext<TContext>();
+                    var ctx = ContextResolver.GetContext<TContext>();
                     if (ctx != null)
                     {
                         foreach (var injector in config.ContextInjectors)
@@ -117,7 +117,7 @@ namespace Microsoft.Diagnostics.Correlation.Instrumentation
                 if (config.EndpointValidator.Validate(request.RequestUri))
                 {
 
-                    var ctx = ContextResolver.GetRequestContext<TContext>();
+                    var ctx = ContextResolver.GetContext<TContext>();
                     try
                     {
                         config.RequestNotifier?.OnAfterResponse(

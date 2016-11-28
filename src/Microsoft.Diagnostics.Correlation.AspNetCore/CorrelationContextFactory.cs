@@ -6,6 +6,7 @@
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 
 namespace Microsoft.Diagnostics.Correlation.AspNetCore

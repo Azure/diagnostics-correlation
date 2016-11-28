@@ -5,6 +5,7 @@
 
 using System;
 using System.Net;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 
 namespace Microsoft.Diagnostics.Correlation.Http

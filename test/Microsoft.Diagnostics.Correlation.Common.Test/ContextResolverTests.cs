@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Context;
 using Xunit;
-using Microsoft.Diagnostics.Correlation.Common;
 
 namespace Microsoft.Diagnostics.Correlation.Test
 {
@@ -11,7 +11,7 @@ namespace Microsoft.Diagnostics.Correlation.Test
         [Fact]
         public void ContextResolverEmpty()
         {
-            Assert.Null(ContextResolver.GetRequestContext<TestContext>());
+            Assert.Null(ContextResolver.GetContext<TestContext>());
         }
 
         [Fact]
@@ -19,8 +19,8 @@ namespace Microsoft.Diagnostics.Correlation.Test
         {
             var ctx = new TestContext {CorrelationId = "1", OtherId = "2"};
 
-            ContextResolver.SetRequestContext(ctx);
-            var gotCtx = ContextResolver.GetRequestContext<TestContext>();
+            ContextResolver.SetContext(ctx);
+            var gotCtx = ContextResolver.GetContext<TestContext>();
 
             TestContextHelper.AssertAreEqual(ctx, gotCtx);
         }
@@ -30,9 +30,9 @@ namespace Microsoft.Diagnostics.Correlation.Test
         {
             var ctx = new TestContext { CorrelationId = "1", OtherId = "2" };
 
-            ContextResolver.SetRequestContext(ctx);
+            ContextResolver.SetContext(ctx);
 
-            var t = Task.Run(() => ContextResolver.GetRequestContext<TestContext>());
+            var t = Task.Run(() => ContextResolver.GetContext<TestContext>());
             await t.ConfigureAwait(false);
             TestContextHelper.AssertAreEqual(ctx, t.Result);
         }
@@ -42,12 +42,12 @@ namespace Microsoft.Diagnostics.Correlation.Test
         {
             var ctx = new TestContext { CorrelationId = "1", OtherId = "2" };
 
-            ContextResolver.SetRequestContext(ctx);
+            ContextResolver.SetContext(ctx);
 
             TestContext gotCtx = null;
             var t = new Thread(() =>
             {
-                gotCtx = ContextResolver.GetRequestContext<TestContext>();
+                gotCtx = ContextResolver.GetContext<TestContext>();
             });
             t.Start();
             t.Join();
@@ -60,18 +60,18 @@ namespace Microsoft.Diagnostics.Correlation.Test
         {
             var ctx = new TestContext { CorrelationId = "1", OtherId = "2" };
 
-            ContextResolver.SetRequestContext(ctx);
+            ContextResolver.SetContext(ctx);
             ContextResolver.ClearContext();
-            Assert.Null(ContextResolver.GetRequestContext<TestContext>());
+            Assert.Null(ContextResolver.GetContext<TestContext>());
         }
 
         [Fact]
         public void PutStringGetObject()
         {
             var guid = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(guid);
+            ContextResolver.SetContext(guid);
 
-            var got = ContextResolver.GetRequestContext<object>();
+            var got = ContextResolver.GetContext<object>();
             Assert.NotNull(got);
             Assert.Equal(guid, got.ToString());
         }

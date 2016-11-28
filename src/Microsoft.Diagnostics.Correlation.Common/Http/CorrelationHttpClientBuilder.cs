@@ -6,6 +6,7 @@
 #if !NET40
 using System.Collections.Generic;
 using System.Net.Http;
+using Microsoft.Diagnostics.Context;
 
 namespace Microsoft.Diagnostics.Correlation.Common.Http
 {

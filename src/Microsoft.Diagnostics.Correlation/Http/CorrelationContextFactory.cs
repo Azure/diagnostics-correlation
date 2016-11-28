@@ -5,8 +5,10 @@
 
 using System;
 using System.Linq;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using System.Web;
+
 
 namespace Microsoft.Diagnostics.Correlation.Http
 {

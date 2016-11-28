@@ -57,10 +57,10 @@ namespace Microsoft.Diagnostics.Correlation.Common.Http
         }
 
         /// <summary>
-        /// Validates Uri to check if it should be insrumented
+        /// Validates Uri to check if it should be instrumented
         /// </summary>
         /// <param name="uri">Uri to check</param>
-        /// <returns>True if endoiunt should be instrumented, false otherwise</returns>
+        /// <returns>True if endpoint should be instrumented, false otherwise</returns>
         public bool Validate(Uri uri)
         {
             if (endpoints.Count == 0) return true;

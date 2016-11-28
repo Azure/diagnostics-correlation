@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
-using Microsoft.Diagnostics.Correlation.Common.Owin;
+using Microsoft.Diagnostics.Correlation.Owin;
 using Xunit;
 
 namespace Microsoft.Diagnostics.Correlation.Middleware.Test
@@ -33,14 +34,14 @@ namespace Microsoft.Diagnostics.Correlation.Middleware.Test
 
         private Task assertEmptyContext(IDictionary<string, object> environment)
         {
-            var ctx = ContextResolver.GetRequestContext<CorrelationContext>();
+            var ctx = ContextResolver.GetContext<CorrelationContext>();
             Assert.NotNull(ctx);
             return Task.FromResult(1);
         }
 
         private Task AssertContext(IDictionary<string, object> environment)
         {
-            var ctx = ContextResolver.GetRequestContext<CorrelationContext>();
+            var ctx = ContextResolver.GetContext<CorrelationContext>();
             Assert.NotNull(ctx);
             Assert.Equal(correlationId, ctx.CorrelationId);
             return Task.FromResult(1);

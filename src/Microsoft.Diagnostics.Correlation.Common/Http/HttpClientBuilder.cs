@@ -42,11 +42,7 @@ namespace Microsoft.Diagnostics.Correlation.Common.Http
         public static HttpClient CreateClient<TContext>(IEnumerable<IContextInjector<TContext, HttpRequestMessage>> contextInjectors,
             params DelegatingHandler[] handlers)
         {
-#if NETSTANDARD1_6
             HttpMessageHandler innerHandler = new HttpClientHandler();
-#else
-            HttpMessageHandler innerHandler = new WebRequestHandler();
-#endif
             return CreateClient(innerHandler, contextInjectors, handlers);
         }
 

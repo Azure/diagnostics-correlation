@@ -4,6 +4,7 @@
 // ------------------------------------------------------------
 
 using System.Collections.Generic;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common.Http;
 
 namespace Microsoft.Diagnostics.Correlation.Common.Instrumentation

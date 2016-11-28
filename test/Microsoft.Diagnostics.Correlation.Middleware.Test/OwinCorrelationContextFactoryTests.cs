@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Diagnostics.Correlation.Common;
-using Microsoft.Diagnostics.Correlation.Common.Owin;
+using Microsoft.Diagnostics.Correlation.Owin;
 using Xunit;
 
 namespace Microsoft.Diagnostics.Correlation.Middleware.Test

@@ -7,8 +7,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Diagnostics.Context;
+using Microsoft.Diagnostics.Correlation.Common;
 
-namespace Microsoft.Diagnostics.Correlation.Common.Owin
+namespace Microsoft.Diagnostics.Correlation.Owin
 {
     /// <summary>
     /// OWIN-specific implementation of <see cref="IContextInjector{TContext,TRequest}"/> for <see cref="CorrelationContext"/>

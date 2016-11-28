@@ -79,6 +79,9 @@ This package alone should be used for non ASP.NET apps or ASP.NET apps hosted wi
 >-  **Microsoft.Diagnostics.Correlation.Common**
 Supported on .NET 4.X and Core
 Contains base interfaces and shared code
+>-  **Microsoft.Diagnostics.Context**
+Supported on .NET 4.X and Core
+Contains `CorrelationContext` and  `ContextResolver` implementations
 
 ## Samples
 Correlation instrumentation in general consist of 2 steps: 

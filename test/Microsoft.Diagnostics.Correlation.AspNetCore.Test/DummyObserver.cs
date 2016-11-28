@@ -1,5 +1,5 @@
 ﻿using System.Net.Http;
-using Microsoft.Diagnostics.Correlation.Common;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
 
 namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test

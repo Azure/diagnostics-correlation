@@ -39,6 +39,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Diagnostics.Corre
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Diagnostics.Correlation.AspNetCore", "src\Microsoft.Diagnostics.Correlation.AspNetCore\Microsoft.Diagnostics.Correlation.AspNetCore.xproj", "{CE57B0F8-B6EC-4BB9-A0D9-78BA68E440E1}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.Diagnostics.Context", "src\Microsoft.Diagnostics.Context\Microsoft.Diagnostics.Context.xproj", "{5953A709-C584-4744-834F-079C38A83E8C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +120,12 @@ Global
 		{CE57B0F8-B6EC-4BB9-A0D9-78BA68E440E1}.Debug-Net46|Any CPU.Build.0 = Debug|Any CPU
 		{CE57B0F8-B6EC-4BB9-A0D9-78BA68E440E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE57B0F8-B6EC-4BB9-A0D9-78BA68E440E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5953A709-C584-4744-834F-079C38A83E8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5953A709-C584-4744-834F-079C38A83E8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5953A709-C584-4744-834F-079C38A83E8C}.Debug-Net46|Any CPU.ActiveCfg = Debug|Any CPU
+		{5953A709-C584-4744-834F-079C38A83E8C}.Debug-Net46|Any CPU.Build.0 = Debug|Any CPU
+		{5953A709-C584-4744-834F-079C38A83E8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5953A709-C584-4744-834F-079C38A83E8C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

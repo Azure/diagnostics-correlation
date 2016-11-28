@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.AspNetCore.Middleware;
 using Microsoft.Diagnostics.Correlation.Common;
 using Moq;
@@ -35,14 +36,14 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
 
         private Task assertEmptyContext(HttpContext context)
         {
-            var ctx = ContextResolver.GetRequestContext<CorrelationContext>();
+            var ctx = ContextResolver.GetContext<CorrelationContext>();
             Assert.NotNull(ctx);
             return Task.FromResult(1);
         }
 
         private Task AssertContext(HttpContext context)
         {
-            var ctx = ContextResolver.GetRequestContext<CorrelationContext>();
+            var ctx = ContextResolver.GetContext<CorrelationContext>();
             Assert.NotNull(ctx);
             Assert.Equal(correlationId, ctx.CorrelationId);
             return Task.FromResult(1);

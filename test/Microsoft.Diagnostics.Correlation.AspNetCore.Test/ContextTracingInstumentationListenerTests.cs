@@ -2,6 +2,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Http;
@@ -46,7 +47,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
             ContextTracingInstrumentation.Enable(config);
 
             var correlationId = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(new CorrelationContext(correlationId));
+            ContextResolver.SetContext(new CorrelationContext(correlationId));
 
             var client = new HttpClient();
             await client.GetAsync("http://bing.com");
@@ -66,7 +67,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
             ContextTracingInstrumentation.Enable(config);
 
             var correlationId = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(new CorrelationContext(correlationId));
+            ContextResolver.SetContext(new CorrelationContext(correlationId));
 
             var client = new HttpClient();
             await client.GetAsync("http://google.com");
@@ -81,7 +82,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
             ContextTracingInstrumentation.Enable(config);
 
             var correlationId = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(new CorrelationContext(correlationId));
+            ContextResolver.SetContext(new CorrelationContext(correlationId));
 
             var client = new HttpClient();
             await client.GetAsync("http://google.com");

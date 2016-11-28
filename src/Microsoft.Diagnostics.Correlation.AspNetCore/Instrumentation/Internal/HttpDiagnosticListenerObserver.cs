@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Reflection;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
 
@@ -41,7 +42,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation.Internal
 
                 if (request != null)
                 {
-                    var ctx = ContextResolver.GetRequestContext<TContext>();
+                    var ctx = ContextResolver.GetContext<TContext>();
                     if (endpointValidator.Validate(request.RequestUri))
                     {
                         foreach (var injector in contextInjectors)
@@ -60,7 +61,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Instrumentation.Internal
                 {
                     if (endpointValidator.Validate(response.RequestMessage.RequestUri))
                     {
-                        requestNotifier.OnAfterResponse(ContextResolver.GetRequestContext<TContext>(), response);
+                        requestNotifier.OnAfterResponse(ContextResolver.GetContext<TContext>(), response);
                     }
                 }
             }

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Context;
 
 namespace Microsoft.Diagnostics.Correlation.Common.Http
 {
@@ -47,7 +48,7 @@ namespace Microsoft.Diagnostics.Correlation.Common.Http
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            var ctx = ContextResolver.GetRequestContext<TContext>();
+            var ctx = ContextResolver.GetContext<TContext>();
             if (ctx != null)
             {
                 foreach (var injector in contextInjectors)

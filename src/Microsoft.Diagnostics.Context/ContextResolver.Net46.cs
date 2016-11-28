@@ -6,7 +6,7 @@
 #if NETSTANDARD1_6 || NET46
 using System.Threading;
 
-namespace Microsoft.Diagnostics.Correlation.Common
+namespace Microsoft.Diagnostics.Context
 {
     /// <summary>
     /// Provides access to generic correlation context
@@ -24,7 +24,7 @@ namespace Microsoft.Diagnostics.Correlation.Common
         /// <typeparam name="TContext">Type of correlation context</typeparam>
         /// <param name="context">Correlation context value</param>
         /// <returns>Context value</returns>
-        public static TContext SetRequestContext<TContext>(TContext context)
+        public static TContext SetContext<TContext>(TContext context)
         {
             Context.Value = context;
             return context;
@@ -35,7 +35,7 @@ namespace Microsoft.Diagnostics.Correlation.Common
         /// </summary>
         /// <typeparam name="TContext">Type of correlation context</typeparam>
         /// <returns>Context value</returns>
-        public static TContext GetRequestContext<TContext>()
+        public static TContext GetContext<TContext>()
         {
             return (TContext)Context.Value;
         }

@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Microsoft.Diagnostics.Correlation.Common
+namespace Microsoft.Diagnostics.Context
 {
     /// <summary>
     /// Provides CorrelationContext implementation holding following properties:

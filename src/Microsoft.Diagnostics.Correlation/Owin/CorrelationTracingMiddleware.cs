@@ -4,9 +4,10 @@
 // ------------------------------------------------------------
 
 #if !NET40
+using Microsoft.Diagnostics.Context;
 using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, object>, System.Threading.Tasks.Task>;
 
-namespace Microsoft.Diagnostics.Correlation.Common.Owin
+namespace Microsoft.Diagnostics.Correlation.Owin
 {
     /// <summary>
     /// Provides OWIN middleware to extract and retain <see cref="CorrelationContext"/> from the incoming request

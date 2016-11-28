@@ -6,6 +6,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 
 namespace Microsoft.Diagnostics.Correlation.AspNetCore.Middleware
@@ -39,7 +40,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Middleware
             try
             {
                 ctx = contextFactory.CreateContext(context.Request);
-                ContextResolver.SetRequestContext(ctx);
+                ContextResolver.SetContext(ctx);
 
                 await next.Invoke(context).ConfigureAwait(false);
             }

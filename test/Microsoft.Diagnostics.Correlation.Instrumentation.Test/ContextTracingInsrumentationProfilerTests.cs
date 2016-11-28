@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
 using Microsoft.Diagnostics.Correlation.Http;
@@ -55,7 +56,7 @@ namespace Microsoft.Diagnostics.Correlation.Instrumentation.Tests
             fixture.Injector.WasCalled = false;
 
             var correlationId = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(new CorrelationContext(correlationId));
+            ContextResolver.SetContext(new CorrelationContext(correlationId));
 
             var client = new HttpClient();
             await client.GetAsync("http://bing.com");
@@ -72,7 +73,7 @@ namespace Microsoft.Diagnostics.Correlation.Instrumentation.Tests
             fixture.Injector.WasCalled = false;
 
             var correlationId = Guid.NewGuid().ToString();
-            ContextResolver.SetRequestContext(new CorrelationContext(correlationId));
+            ContextResolver.SetContext(new CorrelationContext(correlationId));
 
             var request = WebRequest.CreateHttp("http://bing.com");
             try

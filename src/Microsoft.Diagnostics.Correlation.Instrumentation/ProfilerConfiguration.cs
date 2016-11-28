@@ -4,7 +4,7 @@
 // ------------------------------------------------------------
 
 using System.Net;
-using Microsoft.Diagnostics.Correlation.Common;
+using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
 
 namespace Microsoft.Diagnostics.Correlation.Instrumentation

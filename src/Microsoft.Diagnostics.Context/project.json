@@ -1,8 +1,5 @@
 ﻿{
   "version": "1.0.0-*",
-  "dependencies": {
-    "Microsoft.Diagnostics.Context": "1.0.0-*"
-  },
   "frameworks": {
     "netstandard1.6": {
       "imports": "dnxcore50",
@@ -10,23 +7,23 @@
         "NETStandard.Library": "1.6.0"
       }
     },
-    "net46": {
-      "frameworkAssemblies": {
-        "System.Net.Http": "4.0.0.0"
-      }
-    },
+    "net46": {},
     "net45": {
       "frameworkAssemblies": {
-        "System.Net.Http": "4.0.0.0"
+        "System.Runtime.Remoting": "4.0.0.0"
       }
     },
-    "net40": {}
+    "net40": {
+      "frameworkAssemblies": {
+        "System.Runtime.Remoting": "4.0.0.0"
+      }
+    }
   },
   "packOptions": {
     "owners": [ "Microsoft" ],
-    "summary": "Cross-service telemetry correlation library: common cross-platform code",
+    "summary": "Cross-service telemetry correlation library: common context",
     "tags": [
-      "Microsoft, Diagnostics, Correlation"
+      "Microsoft, Diagnostics, Correlation, Context"
     ],
     "requireLicenseAcceptance": true,
     "licenseUrl": "https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm"

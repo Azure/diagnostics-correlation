@@ -4,7 +4,7 @@
 // ------------------------------------------------------------
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.Diagnostics.Correlation.Common;
+using Microsoft.Diagnostics.Context;
 
 namespace Microsoft.Diagnostics.Correlation.AspNetCore.Middleware
 {
