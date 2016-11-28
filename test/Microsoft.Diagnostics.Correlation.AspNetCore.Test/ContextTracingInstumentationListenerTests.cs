@@ -6,6 +6,7 @@ using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Http;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
@@ -15,7 +16,13 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
         [Fact]
         public void ConfigurationNull()
         {
-            Assert.Throws<ArgumentNullException>(() => ContextTracingInstrumentation.Enable(null));
+            Assert.Throws<ArgumentNullException>(() => ContextTracingInstrumentation.Enable((AspNetCoreCorrelationConfiguration)null));
+        }
+
+        [Fact]
+        public void IConfigurationNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => ContextTracingInstrumentation.Enable((IConfiguration)null));
         }
 
         [Fact]
@@ -57,7 +64,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
         public async Task SuccessFlowCustomInjectorBlockedEndpoint()
         {
             var injector = new InjectorMock();
-            var validator = new EndpointValidator();
+            var validator = new EndpointFilter();
             validator.AddEndpoint("google.com");
 
             var config = new AspNetCoreCorrelationConfiguration()

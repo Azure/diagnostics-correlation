@@ -96,6 +96,23 @@ Library provides two instrumentation options:
   * Use  `DelegatingHandler` in `HttpClient` pipeline (you may add it as singlenton to ASP.NET Core services):
 `CorrelationHttpClientBuilder.CreateClient();`
 
+**Note**
+You can define correlation configuration on the file and call `ContextTracingInstrumentation.Enable` with `IConfiguration` parameter.
+Sammple configuration:
+```
+"Correlation" : {
+    "InstrumentOutgoingRequests" : true,
+    "Headers" : {
+      "CorrelationIdHeaderName" : "x-custom-correlation-if",
+      "RequestIdHeaderName" : "x-custom-request-id",
+    },
+    "EndpointFilter" : {
+        "Allow" : false,
+        "Endpoints" : ["core\.windows\.net", "dc\.services\.visualstudio\.com"]
+    }
+}
+```
+
 ### ASP.NET
 1. Incoming requests handling
 In IIS-hosted apps, ActionFilter *must* be used, HttpModule or Owin Middleware *may* be used if context is needed in other custom middlewares or HTTP modules. 

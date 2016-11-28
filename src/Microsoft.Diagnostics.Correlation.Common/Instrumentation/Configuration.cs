@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 using Microsoft.Diagnostics.Context;
-using Microsoft.Diagnostics.Correlation.Common.Http;
 
 namespace Microsoft.Diagnostics.Correlation.Common.Instrumentation
 {
@@ -18,10 +17,10 @@ namespace Microsoft.Diagnostics.Correlation.Common.Instrumentation
     public class Configuration<TContext, TOutRequest, TOutResponse> where TContext : ICorrelationContext<TContext>
     {
         /// <summary>
-        /// Optional <see cref="IEndpointValidator"/> to control which requests to instrument based on their Uri
-        /// <see cref="EndpointValidator"/> is used by default
+        /// Optional <see cref="IEndpointFilter"/> to control which requests to instrument based on their Uri
+        /// <see cref="EndpointFilter"/> is used by default
         /// </summary>
-        public IEndpointValidator EndpointValidator { get; set; } = new EndpointValidator();
+        public IEndpointFilter EndpointFilter { get; set; }
 
         /// <summary>
         /// Optional <see cref="IOutgoingRequestNotifier{TContext,TRequest,TResponse}"/> notifies about outgoing request events
@@ -41,13 +40,13 @@ namespace Microsoft.Diagnostics.Correlation.Common.Instrumentation
         }
 
         /// <summary>
-        /// Sets <see cref="IEndpointValidator"/>
+        /// Sets <see cref="IEndpointFilter"/>
         /// </summary>
-        /// <param name="endpointValidator"><see cref="IEndpointValidator"/> instance</param>
+        /// <param name="endpointFilter"><see cref="IEndpointFilter"/> instance</param>
         /// <returns>Current <see cref="Configuration{TContext,TOutRequest,TOutResponse}"/> for chaining</returns>
-        public Configuration<TContext, TOutRequest, TOutResponse> WithEndpointValidator(IEndpointValidator endpointValidator)
+        public Configuration<TContext, TOutRequest, TOutResponse> WithEndpointValidator(IEndpointFilter endpointFilter)
         {
-            EndpointValidator = endpointValidator;
+            EndpointFilter = endpointFilter;
             return this;
         }
 

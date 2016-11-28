@@ -2,7 +2,9 @@
   "version": "1.0.0-*",
   "dependencies": {
     "Microsoft.AspNetCore.Http": "1.0.0",
+    "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
     "Microsoft.Diagnostics.Correlation.Common": "1.0.0-*",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "NETStandard.Library": "1.6.0"
   },
 
