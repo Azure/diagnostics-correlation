@@ -11,29 +11,29 @@ using System.Text.RegularExpressions;
 namespace Microsoft.Diagnostics.Correlation.Common.Http
 {
     /// <summary>
-    /// Implements <see cref="IEndpointValidator"/> allowing to disable/enable outgoing request instrumentation for list of HTTP endpoints
+    /// Implements <see cref="IEndpointFilter"/> allowing to disable/enable outgoing request instrumentation for list of HTTP endpoints
     /// </summary>
-    public class EndpointValidator : IEndpointValidator
+    public class EndpointFilter : IEndpointFilter
     {
         private readonly HashSet<string> endpoints = new HashSet<string>();
-        private readonly bool whitelist;
+        private readonly bool allow;
 
         /// <summary>
-        /// Constructs EndpointValidator to disable instrumentation for HTTP requests done to Azure Storage and ApplicationInsights APIs
+        /// Constructs EndpointFilter to disable instrumentation for HTTP requests done to Azure Storage and ApplicationInsights APIs
         /// </summary>
-        public EndpointValidator()
+        public EndpointFilter()
         {
-            whitelist = false;
+            allow = false;
             endpoints.Add(@"core\.windows\.net");
             endpoints.Add(@"dc\.services\.visualstudio\.com");
         }
 
         /// <summary>
-        /// Constructs EndpointValidator
+        /// Constructs EndpointFilter
         /// </summary>
         /// <param name="endpointPatterns">List of Regex patterns for endpoints</param>
-        /// <param name="whitelist">Allows to instrument enpoints matching the pattern (if set to true) or NOT matching the pattern (if set to false)</param>
-        public EndpointValidator(IEnumerable<string> endpointPatterns, bool whitelist = true)
+        /// <param name="allow">Allows to instrument enpoints matching the pattern (if set to true) or NOT matching the pattern (if set to false)</param>
+        public EndpointFilter(IEnumerable<string> endpointPatterns, bool allow = true)
         {
             if (endpoints == null) return;
 
@@ -42,15 +42,15 @@ namespace Microsoft.Diagnostics.Correlation.Common.Http
                 endpoints.Add(endpoint);
             }
 
-            this.whitelist = whitelist;
+            this.allow = allow;
         }
 
         /// <summary>
         /// Adds endpoint pattern
         /// </summary>
         /// <param name="endpointPattern">Pattern to add</param>
-        /// <returns>Current EndpointValidator</returns>
-        public EndpointValidator AddEndpoint(string endpointPattern)
+        /// <returns>Current EndpointFilter</returns>
+        public EndpointFilter AddEndpoint(string endpointPattern)
         {
             endpoints.Add(endpointPattern);
             return this;
@@ -67,9 +67,9 @@ namespace Microsoft.Diagnostics.Correlation.Common.Http
 
             if (endpoints.Any(endpoint => Regex.Match(uri.ToString(), endpoint).Success))
             {
-                return whitelist;
+                return allow;
             }
-            return !whitelist;
+            return !allow;
         }
     }
 }

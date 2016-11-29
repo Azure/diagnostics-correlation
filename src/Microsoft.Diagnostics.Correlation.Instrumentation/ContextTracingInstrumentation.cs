@@ -83,7 +83,7 @@ namespace Microsoft.Diagnostics.Correlation.Instrumentation
 
             if (request != null)
             {
-                if (config.EndpointValidator.Validate(request.RequestUri))
+                if (config.EndpointFilter.Validate(request.RequestUri))
                 {
                     var ctx = ContextResolver.GetContext<TContext>();
                     if (ctx != null)
@@ -114,7 +114,7 @@ namespace Microsoft.Diagnostics.Correlation.Instrumentation
             var request = thisObj as WebRequest;
             if (request != null && response != null)
             {
-                if (config.EndpointValidator.Validate(request.RequestUri))
+                if (config.EndpointFilter.Validate(request.RequestUri))
                 {
 
                     var ctx = ContextResolver.GetContext<TContext>();

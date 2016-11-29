@@ -8,6 +8,7 @@ using System.Net.Http;
 using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
 using Microsoft.Diagnostics.Correlation.Common.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Diagnostics.Correlation.AspNetCore
 {
@@ -17,9 +18,23 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore
     public class AspNetCoreCorrelationConfiguration : AspNetCoreConfiguration<CorrelationContext>
     {
         /// <summary>
-        /// <see cref="AspNetCoreCorrelationConfiguration"/> constructor, sets up default <see cref="CorrelationContextFactory"/> and <see cref="CorrelationContextInjector"/>
+        ///<see cref="AspNetCoreCorrelationConfiguration"/> constructor, sets up default <see cref="CorrelationContextFactory"/> and <see cref="CorrelationContextInjector"/>
         /// </summary>
         public AspNetCoreCorrelationConfiguration()
+        {
+            Initialize();
+        }
+
+        /// <summary>
+        /// <see cref="AspNetCoreCorrelationConfiguration"/> constructor, sets up default <see cref="CorrelationContextFactory"/> and <see cref="CorrelationContextInjector"/>
+        /// </summary>
+        /// <param name="configuration">Correlation configuration</param>
+        public AspNetCoreCorrelationConfiguration(IConfiguration configuration) : base(configuration)
+        {
+            Initialize();
+        }
+
+        private void Initialize()
         {
             ContextFactory = new CorrelationContextFactory();
             ContextInjectors = new List<IContextInjector<CorrelationContext, HttpRequestMessage>>

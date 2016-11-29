@@ -10,7 +10,7 @@ namespace Microsoft.Diagnostics.Correlation.Common
     /// <summary>
     /// Validates outgoing request Uri determining if it should be instrumented
     /// </summary>
-    public interface IEndpointValidator
+    public interface IEndpointFilter
     {
         /// <summary>
         /// Validates Uri to check if it should be instrumented

@@ -8,11 +8,11 @@
         /// <summary>
         /// CorrelationId header name
         /// </summary>
-        public const string CorrelationIdHeaderName = "x-ms-request-root-id";
+        public static string CorrelationIdHeaderName = "x-ms-request-root-id";
 
         /// <summary>
         /// RequestId header name
         /// </summary>
-        public const string RequestIdHeaderName = "x-ms-request-id";
+        public static string RequestIdHeaderName = "x-ms-request-id";
     }
 }

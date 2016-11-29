@@ -5,6 +5,7 @@
 
 using System.Net;
 using Microsoft.Diagnostics.Context;
+using Microsoft.Diagnostics.Correlation.Common.Http;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
 
 namespace Microsoft.Diagnostics.Correlation.Instrumentation
@@ -15,5 +16,12 @@ namespace Microsoft.Diagnostics.Correlation.Instrumentation
     /// <typeparam name="TContext">Type of correlation context</typeparam>
     public class ProfilerConfiguration<TContext> : Configuration<TContext, WebRequest, WebResponse> where TContext : ICorrelationContext<TContext>
     {
+        /// <summary>
+        /// Constructs <see cref="ProfilerConfiguration{TContext}"/> with default <see cref="EndpointFilter"/>
+        /// </summary>
+        public ProfilerConfiguration()
+        {
+            EndpointFilter = new EndpointFilter();
+        }
     }
 }

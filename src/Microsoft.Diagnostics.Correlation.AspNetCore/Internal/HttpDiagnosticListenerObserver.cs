@@ -17,15 +17,15 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Internal
     internal class HttpDiagnosticListenerObserver<TContext> : IObserver<KeyValuePair<string, object>> where TContext : ICorrelationContext<TContext>
     {
         private readonly List<IContextInjector<TContext, HttpRequestMessage>> contextInjectors;
-        private readonly IEndpointValidator endpointValidator;
+        private readonly IEndpointFilter endpointFilter;
         private readonly IOutgoingRequestNotifier<TContext, HttpRequestMessage, HttpResponseMessage> requestNotifier;
 
         public HttpDiagnosticListenerObserver(
             IEnumerable<IContextInjector<TContext, HttpRequestMessage>> contextInjectors,
-            IEndpointValidator endpointValidator,
+            IEndpointFilter endpointFilter,
             IOutgoingRequestNotifier<TContext, HttpRequestMessage, HttpResponseMessage> requestNotifier)
         {
-            this.endpointValidator = endpointValidator;
+            this.endpointFilter = endpointFilter;
             this.contextInjectors = new List<IContextInjector<TContext, HttpRequestMessage>>(contextInjectors);
             this.requestNotifier = requestNotifier;
         }
@@ -43,14 +43,14 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Internal
                 if (request != null)
                 {
                     var ctx = ContextResolver.GetContext<TContext>();
-                    if (endpointValidator.Validate(request.RequestUri))
+                    if (endpointFilter.Validate(request.RequestUri))
                     {
                         foreach (var injector in contextInjectors)
                         {
                             injector.UpdateRequest(ctx, request);
                         }
+                        requestNotifier.OnBeforeRequest(ctx, request);
                     }
-                    requestNotifier.OnBeforeRequest(ctx, request);
                 }
             }
             else if (value.Key == "System.Net.Http.Response")
@@ -59,7 +59,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Internal
                 var response = (HttpResponseMessage)responseInfo?.GetValue(value.Value, null);
                 if (response != null)
                 {
-                    if (endpointValidator.Validate(response.RequestMessage.RequestUri))
+                    if (endpointFilter.Validate(response.RequestMessage.RequestUri))
                     {
                         requestNotifier.OnAfterResponse(ContextResolver.GetContext<TContext>(), response);
                     }

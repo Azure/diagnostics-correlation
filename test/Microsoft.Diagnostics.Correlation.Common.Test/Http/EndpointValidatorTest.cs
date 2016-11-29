@@ -9,14 +9,14 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
         [Fact]
         public void EndpointValidatorEmpty()
         {
-            var validator = new EndpointValidator(new string[0]);
+            var validator = new EndpointFilter(new string[0]);
             Assert.True(validator.Validate(new Uri("http://google.com")));
         }
 
         [Fact]
         public void EndpointValidatorDefault()
         {
-            var validator = new EndpointValidator();
+            var validator = new EndpointFilter();
             Assert.True(validator.Validate(new Uri("http://google.com")));
             Assert.False(validator.Validate(new Uri("https://storagesample.blob.core.windows.net")));
         }
@@ -24,7 +24,7 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
         [Fact]
         public void EndpointValidatorWhitelist()
         {
-            var validator = new EndpointValidator(new [] {"bing", "microsoft", "visualstudio"} );
+            var validator = new EndpointFilter(new [] {"bing", "microsoft", "visualstudio"} );
             Assert.False(validator.Validate(new Uri("http://google.com")));
             Assert.True(validator.Validate(new Uri("http://bing.com")));
             Assert.True(validator.Validate(new Uri("http://microsoft.com")));
@@ -34,7 +34,7 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
         [Fact]
         public void EndpointValidatorBlacklist()
         {
-            var validator = new EndpointValidator(new[] {"google"}, false);
+            var validator = new EndpointFilter(new[] {"google"}, false);
             Assert.False(validator.Validate(new Uri("http://google.com")));
             Assert.True(validator.Validate(new Uri("http://bing.com")));
             Assert.True(validator.Validate(new Uri("http://microsoft.com")));
@@ -45,7 +45,7 @@ namespace Microsoft.Diagnostics.Correlation.Test.Http
         [Fact]
         public void EndpointValidatorRegexp()
         {
-            var validator = new EndpointValidator(new[] { "[a-z]+.com" });
+            var validator = new EndpointFilter(new[] { "[a-z]+.com" });
             Assert.True(validator.Validate(new Uri("http://bing.com")));
             Assert.False(validator.Validate(new Uri("http://bing123.com")));
         }

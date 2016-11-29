@@ -12,6 +12,7 @@ using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.AspNetCore.Internal;
 using Microsoft.Diagnostics.Correlation.Common.Http;
 using Microsoft.Diagnostics.Correlation.Common.Instrumentation;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.Diagnostics.Correlation.AspNetCore
 {
@@ -27,7 +28,18 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore
         /// Enables instrumentation of outgoing (and possibly incoming requests)
         /// Extracts <see cref="CorrelationContext"/> from incoming request and injects it to outgoing requests
         /// </summary>
-        /// <param name="configuration">Instrumentation <see cref="AspNetCoreConfiguration{TContext}"/></param>
+        /// <param name="configuration">Instrumentation configuration</param>
+        /// <returns><see cref="IDisposable"/> for the <see cref="DiagnosticListener"/> observers</returns>
+        public static IDisposable Enable(IConfiguration configuration)
+        {
+            return Enable<CorrelationContext>(new AspNetCoreCorrelationConfiguration(configuration));
+        }
+
+        /// <summary>
+        /// Enables instrumentation of outgoing (and possibly incoming requests)
+        /// Extracts <see cref="CorrelationContext"/> from incoming request and injects it to outgoing requests
+        /// </summary>
+        /// <param name="configuration">Instrumentation configuration <see cref="AspNetCoreConfiguration{TContext}"/></param>
         /// <returns><see cref="IDisposable"/> for the <see cref="DiagnosticListener"/> observers</returns>
         public static IDisposable Enable(AspNetCoreCorrelationConfiguration configuration)
         {
@@ -67,7 +79,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore
                 observers.Add(
                     HttpListenerName, new HttpDiagnosticListenerObserver<TContext>(
                         configuration.ContextInjectors,
-                        configuration.EndpointValidator,
+                        configuration.EndpointFilter,
                         new NotifierWrapper<TContext>(configuration.RequestNotifier)));
             }
 

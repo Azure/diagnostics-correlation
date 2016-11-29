@@ -61,23 +61,27 @@
   <Target Name="MoveAssembliesBeforeSigning" Condition="'$(SignType)'!=''" BeforeTargets="SignFiles">
     <ItemGroup>
       <FullAssemblies40 Include="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\net40\Microsoft.Diagnostics.Correlation.Common.dll;
+                                 ..\Microsoft.Diagnostics.Context\bin\$(Configuration)\net40\Microsoft.Diagnostics.Context.dll;      
                                  ..\Microsoft.Diagnostics.Correlation\bin\$(Configuration)\net40\Microsoft.Diagnostics.Correlation.dll;
                                  ..\Microsoft.Diagnostics.Correlation.Instrumentation\bin\$(Configuration)\net40\Microsoft.Diagnostics.Correlation.Instrumentation.dll;
                                  ..\Microsoft.Diagnostics.Correlation.Mvc\bin\$(Configuration)\net40\Microsoft.Diagnostics.Correlation.Mvc.dll;			       			       
                                  ..\Microsoft.Diagnostics.Correlation.WebApi\bin\$(Configuration)\net40\Microsoft.Diagnostics.Correlation.WebApi.dll;"/>	
       <FullAssemblies45 Include="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\net45\Microsoft.Diagnostics.Correlation.Common.dll;
+                                 ..\Microsoft.Diagnostics.Context\bin\$(Configuration)\net45\Microsoft.Diagnostics.Context.dll;      
                                  ..\Microsoft.Diagnostics.Correlation\bin\$(Configuration)\net45\Microsoft.Diagnostics.Correlation.dll;
                                  ..\Microsoft.Diagnostics.Correlation.Instrumentation\bin\$(Configuration)\net45\Microsoft.Diagnostics.Correlation.Instrumentation.dll;
                                  ..\Microsoft.Diagnostics.Correlation.Mvc\bin\$(Configuration)\net45\Microsoft.Diagnostics.Correlation.Mvc.dll;			       			       
                                  ..\Microsoft.Diagnostics.Correlation.WebApi\bin\$(Configuration)\net45\Microsoft.Diagnostics.Correlation.WebApi.dll;"/>	
       <FullAssemblies451 Include="..\Microsoft.Diagnostics.Correlation.AspNetCore\bin\$(Configuration)\net451\Microsoft.Diagnostics.Correlation.AspNetCore.dll;"/>                                 
       <FullAssemblies46 Include="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\net46\Microsoft.Diagnostics.Correlation.Common.dll;
+                                 ..\Microsoft.Diagnostics.Context\bin\$(Configuration)\net46\Microsoft.Diagnostics.Context.dll;      
                                  ..\Microsoft.Diagnostics.Correlation\bin\$(Configuration)\net46\Microsoft.Diagnostics.Correlation.dll;
                                  ..\Microsoft.Diagnostics.Correlation.AspNetCore\bin\$(Configuration)\net46\Microsoft.Diagnostics.Correlation.AspNetCore.dll;
                                  ..\Microsoft.Diagnostics.Correlation.Instrumentation\bin\$(Configuration)\net46\Microsoft.Diagnostics.Correlation.Instrumentation.dll;
                                  ..\Microsoft.Diagnostics.Correlation.Mvc\bin\$(Configuration)\net46\Microsoft.Diagnostics.Correlation.Mvc.dll;			       			       
                                  ..\Microsoft.Diagnostics.Correlation.WebApi\bin\$(Configuration)\net46\Microsoft.Diagnostics.Correlation.WebApi.dll;"/>	
       <CoreAssemblies Include="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\netstandard1.6\Microsoft.Diagnostics.Correlation.Common.dll;
+                               ..\Microsoft.Diagnostics.Context\bin\$(Configuration)\netstandard1.6\Microsoft.Diagnostics.Context.dll;
                                ..\Microsoft.Diagnostics.Correlation.AspNetCore\bin\$(Configuration)\netstandard1.6\Microsoft.Diagnostics.Correlation.AspNetCore.dll;"/>		       
     </ItemGroup>
     <Move SourceFiles="@(FullAssemblies40)" DestinationFolder="$(OutputPath)\full40" />
@@ -89,23 +93,27 @@
   <ItemGroup>
     <!--We can't use wildcard here since it's expanded before build, which is empty.-->
     <FilesToSign Include="$(OutputPath)\full40\Microsoft.Diagnostics.Correlation.Common.dll;
+              $(OutputPath)\full40\Microsoft.Diagnostics.Context.dll;
               $(OutputPath)\full40\Microsoft.Diagnostics.Correlation.dll;
 			  $(OutputPath)\full40\Microsoft.Diagnostics.Correlation.Instrumentation.dll;
 			  $(OutputPath)\full40\Microsoft.Diagnostics.Correlation.Mvc.dll;
 			  $(OutputPath)\full40\Microsoft.Diagnostics.Correlation.WebApi.dll;
               $(OutputPath)\full45\Microsoft.Diagnostics.Correlation.Common.dll;
+              $(OutputPath)\full45\Microsoft.Diagnostics.Context.dll;
               $(OutputPath)\full45\Microsoft.Diagnostics.Correlation.dll;
 			  $(OutputPath)\full45\Microsoft.Diagnostics.Correlation.Instrumentation.dll;
 			  $(OutputPath)\full45\Microsoft.Diagnostics.Correlation.Mvc.dll;
 			  $(OutputPath)\full45\Microsoft.Diagnostics.Correlation.WebApi.dll;
               $(OutputPath)\full451\Microsoft.Diagnostics.Correlation.AspNetCore.dll;
               $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.Common.dll;
+              $(OutputPath)\full46\Microsoft.Diagnostics.Context.dll;
    			  $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.dll;
-              $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.AspNetCore.dll;              
+              $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.AspNetCore.dll;
 			  $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.Instrumentation.dll;
   			  $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.Mvc.dll;
 			  $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.WebApi.dll;
               $(OutputPath)\core\Microsoft.Diagnostics.Correlation.Common.dll;
+              $(OutputPath)\core\Microsoft.Diagnostics.Context.dll;
               $(OutputPath)\core\Microsoft.Diagnostics.Correlation.AspNetCore.dll;">
       <Authenticode>Microsoft</Authenticode>
       <StrongName>StrongName</StrongName>
@@ -113,18 +121,21 @@
   </ItemGroup>
   <Target Name="CopySignedAssembliesBack" Condition="'$(SignType)'!=''" AfterTargets="SignFiles">
     <!--Full framework assemblies-->
-    <Copy SourceFiles="$(OutputPath)\full40\Microsoft.Diagnostics.Correlation.Common.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\net40"/>    
+    <Copy SourceFiles="$(OutputPath)\full40\Microsoft.Diagnostics.Correlation.Common.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\net40"/>
+    <Copy SourceFiles="$(OutputPath)\full40\Microsoft.Diagnostics.Context.dll" DestinationFolder="..\Microsoft.Diagnostics.Context\bin\$(Configuration)\net40"/>
     <Copy SourceFiles="$(OutputPath)\full40\Microsoft.Diagnostics.Correlation.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation\bin\$(Configuration)\net40"/>
     <Copy SourceFiles="$(OutputPath)\full40\Microsoft.Diagnostics.Correlation.Instrumentation.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Instrumentation\bin\$(Configuration)\net40"/>
     <Copy SourceFiles="$(OutputPath)\full40\Microsoft.Diagnostics.Correlation.Mvc.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Mvc\bin\$(Configuration)\net40"/>
     <Copy SourceFiles="$(OutputPath)\full40\Microsoft.Diagnostics.Correlation.WebApi.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.WebApi\bin\$(Configuration)\net40"/>
-    <Copy SourceFiles="$(OutputPath)\full45\Microsoft.Diagnostics.Correlation.Common.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\net45"/>    
+    <Copy SourceFiles="$(OutputPath)\full45\Microsoft.Diagnostics.Correlation.Common.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\net45"/>
+    <Copy SourceFiles="$(OutputPath)\full45\Microsoft.Diagnostics.Context.dll" DestinationFolder="..\Microsoft.Diagnostics.Context\bin\$(Configuration)\net45"/>
     <Copy SourceFiles="$(OutputPath)\full45\Microsoft.Diagnostics.Correlation.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation\bin\$(Configuration)\net45"/>
     <Copy SourceFiles="$(OutputPath)\full45\Microsoft.Diagnostics.Correlation.Instrumentation.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Instrumentation\bin\$(Configuration)\net45"/>
     <Copy SourceFiles="$(OutputPath)\full45\Microsoft.Diagnostics.Correlation.Mvc.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Mvc\bin\$(Configuration)\net45"/>
     <Copy SourceFiles="$(OutputPath)\full45\Microsoft.Diagnostics.Correlation.WebApi.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.WebApi\bin\$(Configuration)\net45"/>
     <Copy SourceFiles="$(OutputPath)\full451\Microsoft.Diagnostics.Correlation.AspNetCore.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.AspNetCore\bin\$(Configuration)\net451"/>        
-    <Copy SourceFiles="$(OutputPath)\full46\Microsoft.Diagnostics.Correlation.Common.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\net46"/>        
+    <Copy SourceFiles="$(OutputPath)\full46\Microsoft.Diagnostics.Correlation.Common.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\net46"/>
+    <Copy SourceFiles="$(OutputPath)\full46\Microsoft.Diagnostics.Context.dll" DestinationFolder="..\Microsoft.Diagnostics.Context\bin\$(Configuration)\net46"/>
     <Copy SourceFiles="$(OutputPath)\full46\Microsoft.Diagnostics.Correlation.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation\bin\$(Configuration)\net46"/>
     <Copy SourceFiles="$(OutputPath)\full46\Microsoft.Diagnostics.Correlation.AspNetCore.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.AspNetCore\bin\$(Configuration)\net46"/>            
     <Copy SourceFiles="$(OutputPath)\full46\Microsoft.Diagnostics.Correlation.Instrumentation.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Instrumentation\bin\$(Configuration)\net46"/>
@@ -132,6 +143,7 @@
     <Copy SourceFiles="$(OutputPath)\full46\Microsoft.Diagnostics.Correlation.WebApi.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.WebApi\bin\$(Configuration)\net46"/>
     <!--.Net core assemblies-->
     <Copy SourceFiles="$(OutputPath)\core\Microsoft.Diagnostics.Correlation.Common.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.Common\bin\$(Configuration)\netstandard1.6"/>
+    <Copy SourceFiles="$(OutputPath)\core\Microsoft.Diagnostics.Context.dll" DestinationFolder="..\Microsoft.Diagnostics.Context\bin\$(Configuration)\netstandard1.6"/>
     <Copy SourceFiles="$(OutputPath)\core\Microsoft.Diagnostics.Correlation.AspNetCore.dll" DestinationFolder="..\Microsoft.Diagnostics.Correlation.AspNetCore\bin\$(Configuration)\netstandard1.6"/>
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
