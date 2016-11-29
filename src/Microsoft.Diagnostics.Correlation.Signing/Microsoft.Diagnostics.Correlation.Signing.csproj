@@ -93,27 +93,27 @@
   <ItemGroup>
     <!--We can't use wildcard here since it's expanded before build, which is empty.-->
     <FilesToSign Include="$(OutputPath)\full40\Microsoft.Diagnostics.Correlation.Common.dll;
-              $(OutputPath)\full40\Microsoft.Context.dll;
+              $(OutputPath)\full40\Microsoft.Diagnostics.Context.dll;
               $(OutputPath)\full40\Microsoft.Diagnostics.Correlation.dll;
 			  $(OutputPath)\full40\Microsoft.Diagnostics.Correlation.Instrumentation.dll;
 			  $(OutputPath)\full40\Microsoft.Diagnostics.Correlation.Mvc.dll;
 			  $(OutputPath)\full40\Microsoft.Diagnostics.Correlation.WebApi.dll;
               $(OutputPath)\full45\Microsoft.Diagnostics.Correlation.Common.dll;
-              $(OutputPath)\full45\Microsoft.Context.dll;
+              $(OutputPath)\full45\Microsoft.Diagnostics.Context.dll;
               $(OutputPath)\full45\Microsoft.Diagnostics.Correlation.dll;
 			  $(OutputPath)\full45\Microsoft.Diagnostics.Correlation.Instrumentation.dll;
 			  $(OutputPath)\full45\Microsoft.Diagnostics.Correlation.Mvc.dll;
 			  $(OutputPath)\full45\Microsoft.Diagnostics.Correlation.WebApi.dll;
               $(OutputPath)\full451\Microsoft.Diagnostics.Correlation.AspNetCore.dll;
               $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.Common.dll;
-              $(OutputPath)\full46\Microsoft.Context.dll;
+              $(OutputPath)\full46\Microsoft.Diagnostics.Context.dll;
    			  $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.dll;
               $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.AspNetCore.dll;
 			  $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.Instrumentation.dll;
   			  $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.Mvc.dll;
 			  $(OutputPath)\full46\Microsoft.Diagnostics.Correlation.WebApi.dll;
               $(OutputPath)\core\Microsoft.Diagnostics.Correlation.Common.dll;
-              $(OutputPath)\core\Microsoft.Context.dll;
+              $(OutputPath)\core\Microsoft.Diagnostics.Context.dll;
               $(OutputPath)\core\Microsoft.Diagnostics.Correlation.AspNetCore.dll;">
       <Authenticode>Microsoft</Authenticode>
       <StrongName>StrongName</StrongName>
