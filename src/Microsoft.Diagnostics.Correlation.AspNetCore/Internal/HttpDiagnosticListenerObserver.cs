@@ -49,8 +49,8 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Internal
                         {
                             injector.UpdateRequest(ctx, request);
                         }
+                        requestNotifier.OnBeforeRequest(ctx, request);
                     }
-                    requestNotifier.OnBeforeRequest(ctx, request);
                 }
             }
             else if (value.Key == "System.Net.Http.Response")
