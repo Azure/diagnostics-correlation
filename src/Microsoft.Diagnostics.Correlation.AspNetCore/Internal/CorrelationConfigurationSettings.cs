@@ -18,7 +18,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Internal
         internal class EndpointFilterSettings
         {
             public bool Allow { get; set; }
-            public IEnumerable<string> Endpoints { get; set; }
+            public List<string> Endpoints { get; set; }
         }
 
         public bool? InstrumentOutgoingRequests { get; set; }

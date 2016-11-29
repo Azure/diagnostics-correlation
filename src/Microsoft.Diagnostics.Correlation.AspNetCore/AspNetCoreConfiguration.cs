@@ -37,7 +37,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore
         public AspNetCoreConfiguration(IConfiguration configuration)
         {
             if (configuration == null)
-                throw new NullReferenceException(nameof(configuration));
+                throw new ArgumentNullException(nameof(configuration));
 
             var settings = new CorrelationConfigurationSettings();
             configuration.Bind(settings);
