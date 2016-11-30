@@ -1,6 +1,6 @@
-﻿#if NETCOREAPP1_0
-using System;
+﻿using System;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
@@ -16,13 +16,14 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
         [Fact]
         public void ConfigurationNull()
         {
-            Assert.Throws<ArgumentNullException>(() => ContextTracingInstrumentation.Enable((AspNetCoreCorrelationConfiguration)null));
+            Assert.Throws<ArgumentNullException>(
+                () => ContextTracingInstrumentation.Enable((AspNetCoreCorrelationConfiguration) null));
         }
 
         [Fact]
         public void IConfigurationNull()
         {
-            Assert.Throws<ArgumentNullException>(() => ContextTracingInstrumentation.Enable((IConfiguration)null));
+            Assert.Throws<ArgumentNullException>(() => ContextTracingInstrumentation.Enable((IConfiguration) null));
         }
 
         [Fact]
@@ -48,7 +49,7 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
             var injector = new InjectorMock();
 
             var config = new AspNetCoreCorrelationConfiguration()
-                .WithContextInjectors(new[] { injector });
+                .WithContextInjectors(new[] {injector});
 
             ContextTracingInstrumentation.Enable(config);
 
@@ -128,4 +129,3 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
         }
     }
 }
-#endif

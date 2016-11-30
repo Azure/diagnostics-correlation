@@ -3,7 +3,6 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-#if NETSTANDARD1_6
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -122,4 +121,3 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore
         }
     }
 }
-#endif

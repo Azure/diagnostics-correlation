@@ -2,16 +2,17 @@
   "version": "1.0.0-*",
   "dependencies": {
     "Microsoft.AspNetCore.Http": "1.0.0",
+    "Microsoft.AspNetCore.Hosting.Abstractions": "1.0.0",
     "Microsoft.Extensions.Configuration.Abstractions": "1.0.0",
-    "Microsoft.Diagnostics.Correlation.Common": "1.0.0-*",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
-    "NETStandard.Library": "1.6.0"
+    "Microsoft.Diagnostics.Correlation.Common": "1.0.0-*",
+    "NETStandard.Library": "1.6.0",
+    "System.Diagnostics.DiagnosticSource": "4.0.0"
   },
 
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50",
-      "dependencies": { "System.Diagnostics.DiagnosticSource": "4.0.0" }
+      "imports": "dnxcore50"
     },
     "net46": {},
     "net451": {}
