@@ -1,6 +1,6 @@
-﻿using System;
+﻿#if NETCOREAPP1_0
+using System;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Diagnostics.Context;
 using Microsoft.Diagnostics.Correlation.Common;
@@ -129,3 +129,4 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Test
         }
     }
 }
+#endif
