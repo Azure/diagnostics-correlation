@@ -23,21 +23,34 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore
         /// <remarks>Add <see cref="IOutgoingRequestNotifier{CorrelationContext,HttpRequestMessage,HttpResponseMessage}"/> singleton to services to receive outgoing requests events</remarks>
         public static IApplicationBuilder UseCorrelationInstrumentation(this IApplicationBuilder app, IConfiguration configuration)
         {
-            var config = new AspNetCoreCorrelationConfiguration(configuration);
+            Initialize(app, new AspNetCoreCorrelationConfiguration(configuration));
+            return app;
+        }
 
-            var notifier = app.ApplicationServices.GetService(
-                    typeof(IOutgoingRequestNotifier<CorrelationContext, HttpRequestMessage, HttpResponseMessage>));
+        /// <summary>
+        /// Enables Correlation instrumentation
+        /// </summary>
+        /// <param name="app"><see cref="IApplicationBuilder"/> application builder</param>
+        /// <returns><see cref="IApplicationBuilder"/> application builder</returns>
+        /// <remarks>Add <see cref="IOutgoingRequestNotifier{CorrelationContext,HttpRequestMessage,HttpResponseMessage}"/> singleton to services to receive outgoing requests events</remarks>
+        public static IApplicationBuilder UseCorrelationInstrumentation(this IApplicationBuilder app)
+        {
+            Initialize(app, new AspNetCoreCorrelationConfiguration());
+            return app;
+        }
+
+        private static void Initialize(IApplicationBuilder app, AspNetCoreCorrelationConfiguration configuration)
+        {
+            var notifier = app.ApplicationServices.GetService(typeof(IOutgoingRequestNotifier<CorrelationContext, HttpRequestMessage, HttpResponseMessage>));
 
             if (notifier != null)
-                config.RequestNotifier = notifier as IOutgoingRequestNotifier<CorrelationContext, HttpRequestMessage, HttpResponseMessage>;
+                configuration.RequestNotifier = notifier as IOutgoingRequestNotifier<CorrelationContext, HttpRequestMessage, HttpResponseMessage>;
 
-            var instrumentaion =  ContextTracingInstrumentation.Enable(config);
+            var instrumentaion = ContextTracingInstrumentation.Enable(configuration);
 
             var appLifetime = app.ApplicationServices.GetService(typeof(IApplicationLifetime)) as IApplicationLifetime;
 
             appLifetime?.ApplicationStopped.Register(() => instrumentaion?.Dispose());
-
-            return app;
         }
     }
 }
