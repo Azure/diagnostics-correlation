@@ -29,7 +29,8 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore
         /// <see cref="AspNetCoreCorrelationConfiguration"/> constructor, sets up default <see cref="CorrelationContextFactory"/> and <see cref="CorrelationContextInjector"/>
         /// </summary>
         /// <param name="configuration">Correlation configuration</param>
-        public AspNetCoreCorrelationConfiguration(IConfiguration configuration) : base(configuration)
+        public AspNetCoreCorrelationConfiguration(IConfiguration configuration)
+            : base(configuration)
         {
             Initialize();
         }

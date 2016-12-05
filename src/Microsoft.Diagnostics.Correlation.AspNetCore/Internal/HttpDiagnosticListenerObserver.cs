@@ -3,7 +3,6 @@
 //  Licensed under the MIT License (MIT). See License.txt in the repo root for license information.
 // ------------------------------------------------------------
 
-#if NETSTANDARD1_6
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -69,7 +68,6 @@ namespace Microsoft.Diagnostics.Correlation.AspNetCore.Internal
 
         public void OnCompleted() {}
 
-        public void OnError(Exception error) { }
+        public void OnError(Exception error) {}
     }
 }
-#endif
