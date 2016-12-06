@@ -89,21 +89,19 @@ Correlation instrumentation in general consist of 2 steps:
 ### ASP.NET Core
 Library provides two instrumentation options:
 1. Instrument both, incoming and outgoing requests with `DiagnosticSource`:
-`ContextTracingInstrumentation.Enable(new AspNetCoreCorrelationConfiguration());`
-2. Do not use diagnostic source instrumentation for outgiung requests instrumentation:
-  * Use ASP.NET Core `DiagnosticSource` for incoming requests only:  
-`ContextTracingInstrumentation.Enable(new AspNetCoreCorrelationConfiguration().DiableOutgoingRequestInstrumentation());`
-  * Use  `DelegatingHandler` in `HttpClient` pipeline (you may add it as singlenton to ASP.NET Core services):
-`CorrelationHttpClientBuilder.CreateClient();`
+`app.UseCorrelationInstrumentation(Configuration.GetSection("Correlation"))`
+2. Use `DiagnosticSource` for incoming requests and `DelegatingHandler` for outgoing requests:
+  * Incoming requests: call `app.UseCorrelationInstrumentation` with `InstrumentOutgoingRequests` set to `false` in configuration
+  * Use `DelegatingHandler` in `HttpClient` pipeline (you may add it as singleton to ASP.NET Core services): `CorrelationHttpClientBuilder.CreateClient()`
 
 **Note**
-You can define correlation configuration on the file and call `ContextTracingInstrumentation.Enable` with `IConfiguration` parameter.
-Sammple configuration:
+You can define correlation configuration in the file and call `app.UseCorrelationInstrumentation` with `IConfiguration` parameter.
+Sample configuration:
 ```
 "Correlation" : {
     "InstrumentOutgoingRequests" : true,
     "Headers" : {
-      "CorrelationIdHeaderName" : "x-custom-correlation-if",
+      "CorrelationIdHeaderName" : "x-custom-correlation-id",
       "RequestIdHeaderName" : "x-custom-request-id",
     },
     "EndpointFilter" : {
@@ -142,7 +140,7 @@ If you use ApplicationInsights to collect telemetry data, you need to configure 
     {
         public void Initialize(ITelemetry telemetry)
         {
-            var ctx = ContextResolver.GetRequestContext<CorrelationContext>();
+            var ctx = ContextResolver.GetContext<CorrelationContext>();
             if (ctx != null)
             {
                 telemetry.Context.Operation.Id = ctx.CorrelationId;

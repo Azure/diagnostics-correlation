@@ -48,9 +48,7 @@ We recommend to add above filters (as appropriate) to the global filters collect
 Please note, filters work only with ```CorrelationContext```.
 
 ### ASP.NET Core apps
-The suite provides ASP.NET Core middleware similarly to the OWIN
->- ```Microsoft.Diagnostics.Correlation.AspNetCore.Middleware.CorrelationContextTracingMiddleware``` Middleware parses correlation-id (string) and request-id (string) from HTTP request headers and stores them in ```CorrelationContext```
->- ```Microsoft.Diagnostics.Correlation.AspNetCore.Middleware.ContextTracingMiddleware<TContext>``` Generic middleware allowing to specify ```IContextFactory``` to generate any context from the request.
+Correlation listens to diagnostics events from ASP.NET Core. Use `app.UseCorrelationInstrumentation` method to enable it.
 
 ## Injecting outgoing requests
 When one service calls another service in the multi-tier application, the suite allows to inject header to outgoing request.
@@ -81,20 +79,21 @@ To get the child context, use one of 2 APIs:
 
 ### HttpClient instrumentation in .NET Core
 ```HttpClient``` is instrumented  in .NET Core with [DiagnosticSource](https://docs.microsoft.com/en-us/dotnet/core/api/system.diagnostics.diagnosticsource). It allows to intercept HttpClient calls and instrument outgoing requests. You may enable it with: 
->-   ```Microsoft.Diagnostics.Correlation.AspNetCore.ContextTracingInstrumentation.Enable```
->- ```Microsoft.Diagnostics.Correlation.AspNetCore.ContextTracingInstrumentation.Enable<TContext>``` - allows to specify ```IContextFactory``` to generate any context from the request and collection of ```IContextInjector``` to inject correlation context to  outgoingrequest.
+`app.UseCorrelationInstrumentation(Configuration.GetSection("Correlation"))`, making sure `InstrumentOutgoingRequests` is set to `false`
+**Note:**
+You may pass your own `IContextFactory` and list of `IContextInjector` by using low level `Microsoft.Diagnostics.Correlation.AspNetCore.ContextTracingInstrumentation.Enable<TContext>` method
 
 > **Note:**
-> Make sure your implementations of ```IContextFactory``` and ```IContextInjector``` do not have complicated logic, or do any time-consuming operations. They will be called for any outgoing and incoming request and therefore may have heavy performance impact.
+> Make sure your implementations of ```IContextFactory``` and ```IContextInjector``` do not have complex logic, or do any time-consuming operations. They will be called for any outgoing and incoming request and therefore may have heavy performance impact.
 
 #### Logging outgoing requests
 Unlike ```HttpClient``` handler pipeline, ```DiagnosticListener``` instrumentation does not allow to hook into it, so the library notifies about outgoing request events with ```IOutgoingRequestNotifier``` 
 Context received in ```IOutgoingRequestNotifier```  already contains ```child request id``` 
-You may configure ```IOutgoingRequestNotifier``` in ```Configuration``` class and pass to ```Enable``` methods.
+You may implement ```IOutgoingRequestNotifier``` and register it in application services.
 
 ### Profiler (does not have nuget package)
 Library provides capability to instrument ```WebRequest.BeginGetResponse``` (which would be called for ```HttpClient``` and ```WebRequest``` methods). You may enable it with
->-   ```Microsoft.Diagnostics.Correlation.Instrumentation.ContextTracingInstrumentation.Enable```
+>- ```Microsoft.Diagnostics.Correlation.Instrumentation.ContextTracingInstrumentation.Enable```
 >- ```Microsoft.Diagnostics.Correlation.Instrumentation.ContextTracingInstrumentation.Enable<TContext>``` - allows to specify ```IContextFactory``` to generate any context from the request and collection of ```IContextInjector``` to inject correlation context to  outgoing request.
 Profiler requires some configuration to be done with application: agent should be installed on the host and app should run with some environment variables.
 1. For Azure Web Applications, just install ApplicationInsights Extension on the portal
@@ -123,6 +122,26 @@ Correlation library provides implementation of ```CorrelationContext``` and seve
 
 ## Samples
 ### ASP.NET Core
+You can define correlation configuration in the settings file or construct `AspNetCoreCorrelationConfiguration`.
+Sample configuration:
+```
+"Correlation" : {
+    "InstrumentOutgoingRequests" : true,
+    "Headers" : {
+      "CorrelationIdHeaderName" : "x-custom-correlation-id",
+      "RequestIdHeaderName" : "x-custom-request-id",
+    },
+    "EndpointFilter" : {
+        "Allow" : false,
+        "Endpoints" : ["core\.windows\.net", "dc\.services\.visualstudio\.com"]
+    }
+}
+```
+All parameters are optional.
+- `InstrumentOutgoingRequests` - enables/disables outgoing requests instrumentation, true by default,
+- `Headers` - allows to set correlaiton header names. Default values are `x-ms-request-root-id` (correlation-id) and `x-ms-request-id` (request id)
+- `EndpointFilter` - filter for outgoing request `Uri`, allows to control which doutgoing requests are instrumented. By default rejects instrumentation for Azure Storage and ApplicationInsights endpoints,
+
 
 #### HttpClient handler
 In ```Startup.cs```
@@ -131,18 +150,19 @@ In ```Startup.cs```
 ```
     services.AddSingleton(CorrelationHttpClientBuilder.CreateClient());
 ```
->- Use ```CorrelationContextTracingMiddleware```:
+>- Enable correlation support:
 ```
-    app.UseMiddleware<CorrelationContextTracingMiddleware>();
+   app.UseCorrelationInstrumentation(Configuration.GetSection("Correlation"));
 ```
-#### HttpClient Instrumentation
+#### DiagnosticSource Instrumentation
+>- Register `IOutgoingRequestNotifier` to receive outgoing requests notifications:
 ```
-var configuration = new AspNetCoreCorrelationConfiguration();
-ContextTracingInstrumentation.Enable(.WithOutgoingRequestNotifier(configuration);
+    services.AddRequestNotifier(new OutgoingRequestNotifier());
 ```
-> **Note**
->- Use ```AspNetCoreCorrelationConfiguration.DiableIncomingRequestInstrumentation()``` to disable incoming request instrumentation and use middleware instead.
->- Use ```AspNetCoreCorrelationConfiguration.WithOutgoingRequestNotifier()``` to get notifications about outgoing requests in order to log them
+>- Enable correlation support:
+```
+   app.UseCorrelationInstrumentation(Configuration.GetSection("Correlation"));
+```
 
 ### ASP.NET
 You may use OWIN correlation middleware or HttpModule implementation to handle incoming requests,
